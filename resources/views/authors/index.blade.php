@@ -3,21 +3,23 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Data Author</title>
+    <title>Data Penulis</title>
 </head>
 <body>
-    <h1>Daftar Penulis Buku</h1>
+    <h1>Daftar Penulis</h1>
 
     <table border="1" cellpadding="10" cellspacing="0">
         <tr>
             <th>ID</th>
             <th>Nama Penulis</th>
+            <th>Jumlah Buku</th>
         </tr>
 
         @foreach ($authors as $author)
             <tr>
-                <td>{{ $author['id'] }}</td>
-                <td>{{ $author['name'] }}</td>
+                <td>{{ $author->id }}</td>
+                <td>{{ $author->name }}</td>
+                <td>{{ $author->books->count() }}</td>
             </tr>
         @endforeach
     </table>
