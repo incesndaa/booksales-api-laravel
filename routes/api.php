@@ -10,7 +10,16 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/books', [BookController::class, 'index']);
+Route::apiResource('genres', GenreController::class)
+    ->only(['index', 'show']);
 
-Route::apiResource('genres', GenreController::class);
-Route::apiResource('authors', AuthorController::class);
+Route::apiResource('genres', GenreController::class)
+    ->except(['index', 'show'])
+    ->middleware(['auth:sanctum', 'admin']);
+
+Route::apiResource('authors', AuthorController::class)
+    ->only(['index', 'show']);
+
+Route::apiResource('authors', AuthorController::class)
+    ->except(['index', 'show'])
+    ->middleware(['auth:sanctum', 'admin']);
