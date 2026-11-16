@@ -8,10 +8,35 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
+    public function paymentStatus(Request $request, $orderNumber)
+    {
+        $transaction = Transaction::with([
+            'items.book',
+            'customer',
+        ])
+            ->where('order_number', $orderNumber)
+            ->where('customer_id', $request->user()->id)
+            ->firstOrFail();
+
+        return response()->json([
+            'order_number' => $transaction->order_number,
+            'payment_status' => $transaction->payment_status,
+            'total_amount' => $transaction->total_amount,
+            'paid_at' => $transaction->paid_at,
+            'items' => $transaction->items,
+            'customer' => $transaction->customer,
+        ]);
+    }
      // Read All
     public function index()
     {
-        $transactions = Transaction::with(['customer', 'book'])->get();
+        $transactions = Transaction::with([
+            'customer',
+            'items.book',
+        ])
+            ->latest()
+            ->get();
+
         return response()->json($transactions);
     }
 
@@ -86,5 +111,17 @@ class TransactionController extends Controller
         $transaction->delete();
 
         return response()->json(['message' => 'Transaction deleted successfully']);
+    }
+
+    public function history(Request $request)
+    {
+        $transactions = Transaction::with([
+            'items.book',
+        ])
+            ->where('customer_id', $request->user()->id)
+            ->latest()
+            ->get();
+
+        return response()->json($transactions);
     }
 }

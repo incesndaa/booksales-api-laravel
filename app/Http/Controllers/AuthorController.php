@@ -68,14 +68,20 @@ class AuthorController extends Controller
 
         if (!$author) {
             return response()->json([
-                'message' => 'Author tidak ditemukan'
+                'message' => 'Author tidak ditemukan.'
             ], 404);
+        }
+
+        if ($author->books()->exists()) {
+            return response()->json([
+                'message' => 'Author tidak dapat dihapus karena masih digunakan oleh data buku.'
+            ], 422);
         }
 
         $author->delete();
 
         return response()->json([
-            'message' => 'Author berhasil dihapus'
+            'message' => 'Author berhasil dihapus.'
         ], 200);
     }
 }

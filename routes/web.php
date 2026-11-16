@@ -7,5 +7,6 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
 });
+

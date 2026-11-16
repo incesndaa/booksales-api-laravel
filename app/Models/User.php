@@ -35,4 +35,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class, 'customer_id');
     }
+
+    public $timestamps = false;
 }
